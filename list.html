@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ToDo List</title>
+    <style>
+        html,
+        *{
+            margin: 0;
+            padding: 0;
+                 }
+        body {
+
+            background-image: url("12.jpg");
+            background-size: cover;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+        #wrapper h1 {
+            display: flex;
+            justify-content: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+        }
+
+        h1 {
+            color:orange;
+            letter-spacing: 1px;
+        }
+
+        input {
+
+            border-radius: 5px;
+
+            margin-top: 30px;
+            height: 2.5em;
+            width: 250px;
+            padding-left: 10px;
+            border: none;
+        }
+
+        input:active {
+            border: none;
+        }
+
+        #wrapper {
+            height: 500px;
+            width: 400px;
+            margin-left: 500px;
+            margin-top: 50px;
+            background-color: #c9c9cc;
+
+            padding: 30px;
+            border-radius: 50px;
+        }
+
+        button {
+            margin-top: 20px;
+
+            border-radius: 4px;
+            height: 34px;
+            font-weight: 700;
+            padding: 0 30px;
+            letter-spacing: 1px;
+            border: none;
+            color: #111111;
+        }
+
+        button:hover {
+            cursor: pointer;
+            color: aliceblue;
+            background-color: #687cf1;
+        }
+
+        #todoList {
+            color: white;
+            font-size: 20px;
+            margin-top: 10px;
+
+        }
+
+        #todoList p {
+            margin: 10px 0px;
+        }
+
+        #todoList p:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <h1>Todo List</h2>
+            <input type="text" id="input">
+            <button id="add">Add</button>
+            <div id="todoList">
+
+            </div>
+    </div>
+    <script>
+        let button = document.getElementById('add')
+        let todoList = document.getElementById('todoList')
+        let input = document.getElementById('input');
+        //local storage,cookies
+        let todos = [];
+        window.onload = () => {
+            todos = JSON.parse(localStorage.getItem('todos')) || []
+            todos.forEach(todo => addtodo(todo))
+        }
+
+        button.addEventListener('click', () => {
+            todos.push(input.value)
+            localStorage.setItem('todos', JSON.stringify(todos))
+            addtodo(input.value)
+            input.value = ''
+        })
+
+        function addtodo(todo) {
+            let para = document.createElement('p');
+            para.innerText = todo;
+            todoList.appendChild(para)
+
+            para.addEventListener('click', () => {
+                para.style.textDecoration = 'line-through'
+                remove(todo)
+            })
+            para.addEventListener('dblclick', () => {
+                todoList.removeChild(para)
+                remove(todo)
+            })
+        }
+
+        function remove(todo) {
+            let index = todos.indexOf(todo)
+            if (index > -1) {
+                todos.splice(index, 1);
+            }
+            localStorage.setItem('todos', JSON.stringify(todos))
+        }
+    </script>
+</body>
+
+</html>
